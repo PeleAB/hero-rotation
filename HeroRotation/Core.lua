@@ -351,6 +351,22 @@ function HR.CmdHandler(Message)
     if not HR.GUISettings.General.SilentMode then
       HR.Print("AoE is now "..(HeroRotationCharDB.Toggles[2] and "|cff00ff00enabled|r." or "|cffff0000disabled|r."))
     end
+  elseif Argument1 == "interrupts" then
+    if type(HeroRotationCharDB) ~= "table" then HeroRotationCharDB = {}; end
+    if type(HeroRotationCharDB.Toggles) ~= "table" then HeroRotationCharDB.Toggles = {}; end
+    if type(HeroRotationCharDB.Toggles[6]) ~= "boolean" then
+      HeroRotationCharDB.Toggles[6] = HR.GUISettings.General.InterruptEnabled
+    end
+    HeroRotationCharDB.Toggles[6] = not HeroRotationCharDB.Toggles[6]
+    local InterruptEnabled = HeroRotationCharDB.Toggles[6]
+    HR.GUISettings.General.InterruptEnabled = InterruptEnabled
+    if not HeroRotationDB then HeroRotationDB = {}; end
+    if type(HeroRotationDB.GUISettings) ~= "table" then HeroRotationDB.GUISettings = {}; end
+    HeroRotationDB.GUISettings["General.InterruptEnabled"] = InterruptEnabled
+    HR.ToggleIconFrame:UpdateButtonText(6)
+    if not HR.GUISettings.General.SilentMode then
+      HR.Print("Interrupts are now "..(InterruptEnabled and "|cff00ff00enabled|r." or "|cffff0000disabled|r."))
+    end
   elseif Argument1 == "toggle" then
     HeroRotationCharDB.Toggles[3] = not HeroRotationCharDB.Toggles[3]
     HR.ToggleIconFrame:UpdateButtonText(3)
@@ -414,6 +430,7 @@ function HR.CmdHandler(Message)
     HR.Print("On/Off: |cff8888ff/hr toggle|r")
     HR.Print("   CDs: |cff8888ff/hr cds|r")
     HR.Print("   AoE: |cff8888ff/hr aoe|r")
+    HR.Print("Interrupts: |cff8888ff/hr interrupts|r")
     HR.Print(" Debug: |cff8888ff/hr debug|r")
     HR.Print(" Flash: |cff8888ff/hr flash|r")
     HR.Print("|cffffff00--[User Interface]--|r")
@@ -449,6 +466,10 @@ SlashCmdList["HEROROTATION"] = HR.CmdHandler
 -- Get if the CDs are enabled.
 function HR.CDsON()
   return HeroRotationCharDB.Toggles[1]
+end
+
+function HR.InterruptsON()
+  return HeroRotationCharDB.Toggles[6] and HR.GUISettings.General.InterruptEnabled
 end
 
 -- Check if debug is enabled

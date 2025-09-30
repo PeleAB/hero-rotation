@@ -5,6 +5,9 @@
   <Binding name="HEROROTATION_AOE" description="Toggle On/Off the AoE." category="ADDONS">
     HeroRotation.CmdHandler("aoe");
   </Binding>
+  <Binding name="HEROROTATION_INTERRUPTS" description="Toggle On/Off interrupts." category="ADDONS">
+    HeroRotation.CmdHandler("interrupts");
+  </Binding>
   <Binding name="HEROROTATION_TOGGLE" description="Toggle On/Off the Addon." category="ADDONS">
     HeroRotation.CmdHandler("toggle");
   </Binding>

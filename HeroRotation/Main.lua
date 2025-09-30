@@ -69,6 +69,7 @@ end
 BINDING_HEADER_HEROROTATION = "HeroRotation"
 BINDING_NAME_HEROROTATION_CDS = "Toggle CDs"
 BINDING_NAME_HEROROTATION_AOE = "Toggle AoE"
+BINDING_NAME_HEROROTATION_INTERRUPTS = "Toggle Interrupts"
 BINDING_NAME_HEROROTATION_TOGGLE = "Toggle On/Off"
 BINDING_NAME_HEROROTATION_UNLOCK = "Unlock the addon to move icons"
 BINDING_NAME_HEROROTATION_LOCK = "Lock the addon in place"
@@ -109,20 +110,37 @@ function HR.MainFrame:ResizeUI (Multiplier)
 end
 
 function HR.MainFrame:ResizeButtons (Multiplier)
+  local ButtonCount = HR.ToggleIconFrame.ButtonCount or 0
+  local ToggleWidth = ButtonCount > 0 and (21 * ButtonCount + 1) or 64
   local FramesToResize = {
     -- TODO: Put the Size in one Array in UI.lua and pull it out here
-    {HR.ToggleIconFrame, 64, 20},
-    {HR.ToggleIconFrame.Button[1], 20, 20},
-    {HR.ToggleIconFrame.Button[2], 20, 20},
-    {HR.ToggleIconFrame.Button[3], 20, 20}
+    {HR.ToggleIconFrame, ToggleWidth, 20},
   }
-  for Key, Value in pairs(FramesToResize) do
-    Value[1]:SetWidth(Value[2]*Multiplier)
-    Value[1]:SetHeight(Value[3]*Multiplier)
+  local ButtonOrder = HR.ToggleIconFrame.ButtonOrder or {}
+  local Buttons = HR.ToggleIconFrame.Button or {}
+
+  for index = 1, #ButtonOrder do
+    local ButtonFrame = Buttons[ButtonOrder[index]]
+    if ButtonFrame then
+      table.insert(FramesToResize, {ButtonFrame, 20, 20})
+    end
   end
-  for i = 1, 3 do
-    HR.ToggleIconFrame.Button[i]:SetPoint("LEFT", HR.ToggleIconFrame, "LEFT", HR.ToggleIconFrame.Button[i]:GetWidth()*(i-1)+i, 0)
+
+  for _, Value in ipairs(FramesToResize) do
+    local Frame, Width, Height = Value[1], Value[2], Value[3]
+    if Frame then
+      Frame:SetWidth(Width * Multiplier)
+      Frame:SetHeight(Height * Multiplier)
+    end
   end
+
+  for index = 1, #ButtonOrder do
+    local ButtonFrame = Buttons[ButtonOrder[index]]
+    if ButtonFrame then
+      ButtonFrame:SetPoint("LEFT", HR.ToggleIconFrame, "LEFT", 21 * (index - 1) + 1, 0)
+    end
+  end
+
   HeroRotationDB.GUISettings["Scaling.ScaleButtons"] = Multiplier
 end
 

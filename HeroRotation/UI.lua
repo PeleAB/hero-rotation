@@ -854,7 +854,7 @@ function HR.ToggleIconFrame:Init ()
   -- Frame Init
   self:SetFrameStrata(HR.MainFrame:GetFrameStrata())
   self:SetFrameLevel(HR.MainFrame:GetFrameLevel() - 1)
-  self:SetWidth(64)
+  self:SetWidth(21)
   self:SetHeight(20)
 
   -- Reset the Anchor if saved data are not valid (i.e. data saved before 7.1.5843)
@@ -901,8 +901,11 @@ function HR.ToggleIconFrame:Init ()
 
   -- Button Creation
   self.Button = {}
+  self.ButtonOrder = {}
+  self.ButtonCount = 0
   self:AddButton("C", 1, "CDs", "cds")
   self:AddButton("A", 2, "AoE", "aoe")
+  self:AddButton("I", 6, "Interrupts", "interrupts", HR.GUISettings.General.InterruptEnabled)
   self:AddButton("O", 3, "On/Off", "toggle")
 end
 
@@ -913,13 +916,14 @@ function HR.ToggleIconFrame:ResetAnchor ()
 end
 
 -- Add a button
-function HR.ToggleIconFrame:AddButton (Text, i, Tooltip, CmdArg)
+function HR.ToggleIconFrame:AddButton (Text, i, Tooltip, CmdArg, DefaultState)
+  local position = (self.ButtonCount or 0) + 1
   local ButtonFrame = CreateFrame("Button", "$parentButton"..tostring(i), self)
   ButtonFrame:SetFrameStrata(self:GetFrameStrata())
   ButtonFrame:SetFrameLevel(self:GetFrameLevel() - 1)
   ButtonFrame:SetWidth(20)
   ButtonFrame:SetHeight(20)
-  ButtonFrame:SetPoint("LEFT", self, "LEFT", 20*(i-1)+i, 0)
+  ButtonFrame:SetPoint("LEFT", self, "LEFT", 21*(position-1)+1, 0)
 
   -- Button Tooltip (Optional)
   if Tooltip then
@@ -969,7 +973,11 @@ function HR.ToggleIconFrame:AddButton (Text, i, Tooltip, CmdArg)
     HeroRotationCharDB.Toggles = {}
   end
   if type(HeroRotationCharDB.Toggles[i]) ~= "boolean" then
-    HeroRotationCharDB.Toggles[i] = true
+    if DefaultState ~= nil then
+      HeroRotationCharDB.Toggles[i] = DefaultState
+    else
+      HeroRotationCharDB.Toggles[i] = true
+    end
   end
 
   -- OnClick Callback
@@ -982,6 +990,9 @@ function HR.ToggleIconFrame:AddButton (Text, i, Tooltip, CmdArg)
   )
 
   self.Button[i] = ButtonFrame
+  self.ButtonOrder[position] = i
+  self.ButtonCount = position
+  self:SetWidth(21 * self.ButtonCount + 1)
 
   HR.ToggleIconFrame:UpdateButtonText(i)
 
@@ -990,9 +1001,19 @@ end
 
 -- Update a button text
 function HR.ToggleIconFrame:UpdateButtonText (i)
-  if HeroRotationCharDB.Toggles[i] then
-    self.Button[i]:SetFormattedText("|cff00ff00%s|r", self.Button[i].text)
+  local ButtonFrame = self.Button and self.Button[i]
+  if not ButtonFrame then return end
+
+  local Toggles = HeroRotationCharDB.Toggles or {}
+  local IsEnabled = Toggles[i] or false
+  if i == 6 then
+    IsEnabled = IsEnabled and HR.GUISettings.General.InterruptEnabled
+  end
+
+  if IsEnabled then
+    ButtonFrame:SetFormattedText("|cff00ff00%s|r", ButtonFrame.text)
   else
-    self.Button[i]:SetFormattedText("|cffff0000%s|r", self.Button[i].text)
+    ButtonFrame:SetFormattedText("|cffff0000%s|r", ButtonFrame.text)
   end
 end
+

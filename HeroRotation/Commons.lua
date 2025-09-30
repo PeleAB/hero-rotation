@@ -3,6 +3,7 @@
 -- Addon
 local addonName, HR     = ...
 local AoEON             = HR.AoEON
+local InterruptsON      = HR.InterruptsON
 local Cast              = HR.Cast
 local CastLeftNameplate = HR.CastLeftNameplate
 -- HeroLib
@@ -57,7 +58,7 @@ end
 
 -- Interrupt
 function Commons.Interrupt(Spell, Setting, StunSpells)
-  if Settings.InterruptEnabled then
+  if Settings.InterruptEnabled and InterruptsON() then
     if (not Settings.InterruptCycle or not AoEON() or Target:IsInterruptible()) and Target:IsInterruptible() then
       if Spell:IsCastable(true) and Target:IsSpellInRange(Spell) then
         if Cast(Spell, nil, Setting) then return "Cast " .. Spell:Name() .. " (Interrupt)"; end
