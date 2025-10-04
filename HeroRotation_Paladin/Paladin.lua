@@ -60,6 +60,7 @@ Spell.Paladin.Commons = {
   -- Buffs
   AvengingWrathBuff                     = Spell(31884),
   BlessingofDawnBuff                    = Spell(385127),
+  DivineShieldBuff                      = Spell(642),
   BlessingofDuskBuff                    = Spell(385126),
   ConsecrationBuff                      = Spell(188370),
   DivinePurposeBuff                     = Spell(223819),
@@ -69,6 +70,7 @@ Spell.Paladin.Commons = {
   ConsecrationDebuff                    = Spell(204242),
   JudgmentDebuff                        = Spell(197277),
   MarkofFyralathDebuff                  = Spell(414532),
+  ForbearanceDebuff                     = Spell(25771),
   -- Pool
   Pool                                  = Spell(999910),
 }
@@ -205,6 +207,7 @@ Spell.Paladin.Retribution = MergeTableByKey(Spell.Paladin.Commons, {
   EchoesofWrathBuff                     = Spell(423590), -- T31, 4pc
   EmpyreanLegacyBuff                    = Spell(387178),
   EmpyreanPowerBuff                     = Spell(326733),
+  ShieldofVengeanceBuff                = Spell(184662),
   -- Tier Set Bonuses (TWW)
   WinningStreakBuff                     = Spell(1216828), -- TWW S2 2pc Buff
   AllInBuff                             = Spell(1216837), -- TWW S2 4pc Buff

@@ -211,6 +211,26 @@ local function Precombat()
   end
 end
 
+local function Defensives()
+  local healthPercent = Player:HealthPercentage()
+
+  if Settings.Retribution.DivineShieldHP > 0 and S.DivineShield:IsCastable() and healthPercent <= Settings.Retribution.DivineShieldHP and Player:BuffDown(S.DivineShieldBuff) and Player:DebuffDown(S.ForbearanceDebuff) then
+    if Cast(S.DivineShield, Settings.Retribution.OffGCDasOffGCD.DivineShield, Settings.Retribution.DisplayStyle.Defensives) then return "divine_shield defensives 0"; end
+  end
+
+  if Settings.Retribution.ShieldOfVengeanceHP > 0 and S.ShieldofVengeance:IsCastable() and healthPercent <= Settings.Retribution.ShieldOfVengeanceHP and Player:BuffDown(S.ShieldofVengeanceBuff) then
+    if Cast(S.ShieldofVengeance, Settings.Retribution.GCDasOffGCD.ShieldOfVengeance, Settings.Retribution.DisplayStyle.Defensives) then return "shield_of_vengeance defensives 2"; end
+  end
+
+  if Settings.Retribution.WordOfGloryHP > 0 and S.WordofGlory:IsReady() and healthPercent <= Settings.Retribution.WordOfGloryHP and not Player:HealingAbsorbed() then
+    if Cast(S.WordofGlory, Settings.Retribution.GCDasOffGCD.WordOfGlory, Settings.Retribution.DisplayStyle.Defensives) then return "word_of_glory defensives 4"; end
+  end
+
+  if Settings.Retribution.FlashOfLightHP > 0 and S.FlashofLight:IsCastable() and healthPercent <= Settings.Retribution.FlashOfLightHP and not Player:IsMoving() and not Player:HealingAbsorbed() then
+    if Cast(S.FlashofLight, Settings.Retribution.GCDasOffGCD.FlashOfLight, Settings.Retribution.DisplayStyle.Defensives) then return "flash_of_light defensives 6"; end
+  end
+end
+
 local function Cooldowns()
   -- potion,if=buff.avenging_wrath.up|buff.crusade.up|debuff.execution_sentence.up|fight_remains<30
   if Settings.Commons.Enabled.Potions and ((Settings.Retribution.DisableCrusadeAWCDCheck or Player:BuffUp(S.AvengingWrathBuff) or Player:BuffUp(S.CrusadeBuff)) or Target:DebuffUp(S.ExecutionSentenceDebuff) or BossFightRemains < 30) then
@@ -256,7 +276,7 @@ local function Cooldowns()
     end
   end
   -- shield_of_vengeance,if=fight_remains>15&(!talent.execution_sentence|!debuff.execution_sentence.up)&!buff.divine_hammer.up
-  if S.ShieldofVengeance:IsCastable() and (FightRemains > 15 and (not S.ExecutionSentence:IsAvailable() or Target:DebuffDown(S.ExecutionSentenceDebuff)) and not Paladin.DivineHammerActive) then
+  if Settings.Retribution.ShieldOfVengeanceHP == 0 and S.ShieldofVengeance:IsCastable() and (FightRemains > 15 and (not S.ExecutionSentence:IsAvailable() or Target:DebuffDown(S.ExecutionSentenceDebuff)) and not Paladin.DivineHammerActive) then
     if Cast(S.ShieldofVengeance, Settings.Retribution.GCDasOffGCD.ShieldOfVengeance) then return "shield_of_vengeance cooldowns 18"; end
   end
   -- execution_sentence,if=(!buff.crusade.up&cooldown.crusade.remains>15|buff.crusade.stack=10|cooldown.avenging_wrath.remains<0.75|cooldown.avenging_wrath.remains>15|talent.radiant_glory)&(holy_power>=4&time<5|holy_power>=3&time>5|(holy_power>=2|time<5)&(talent.divine_auxiliary|talent.radiant_glory))&(cooldown.divine_hammer.remains>5|buff.divine_hammer.up|!talent.divine_hammer)&(target.time_to_die>8&!talent.executioners_will|target.time_to_die>12)&cooldown.wake_of_ashes.remains<gcd
@@ -406,6 +426,7 @@ local function APL()
     -- auto_attack
     -- rebuke
     local ShouldReturn = Everyone.Interrupt(S.Rebuke, Settings.CommonsDS.DisplayStyle.Interrupts, StunInterrupts); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Defensives(); if ShouldReturn then return ShouldReturn; end
     -- call_action_list,name=cooldowns
     -- Note: Checking CDsON within the function, as potion and trinket usage is also included, but shouldn't be tied to CDsON.
     local ShouldReturn = Cooldowns(); if ShouldReturn then return ShouldReturn; end

@@ -71,18 +71,28 @@ HR.GUISettings.APL.Paladin = {
   Retribution = {
     DisableCrusadeAWCDCheck = false,
     DisableDivineHammerCheck = false,
+    DivineShieldHP = 20,
+    ShieldOfVengeanceHP = 60,
+    WordOfGloryHP = 45,
+    FlashOfLightHP = 65,
     PotionType = {
       Selected = "Tempered",
+    },
+    DisplayStyle = {
+      Defensives = "SuggestedRight",
     },
     GCDasOffGCD = {
       DivineHammer = false,
       ExecutionSentence = false,
       FinalReckoning = false,
+      FlashOfLight = false,
       ShieldOfVengeance = true,
       WakeOfAshes = false,
+      WordOfGlory = true,
     },
     OffGCDasOffGCD = {
       AvengingWrath = true,
+      DivineShield = true,
     },
   },
 }
@@ -114,3 +124,7 @@ CreateARPanelOptions(CP_Protection2, "APL.Paladin.Protection")
 CreateARPanelOptions(CP_Retribution, "APL.Paladin.Retribution")
 CreatePanelOption("CheckButton", CP_Retribution, "APL.Paladin.Retribution.DisableCrusadeAWCDCheck", "Disable Crusade/AW CD Checks for Finishers and Cooldowns", "Enable this option to ignore the status of Crusade and Avenging Wrath when deciding whether to suggest finishers or other 'cooldown' abilities. NOTE: This causes the addon to stray from the APL, which will result in a DPS LOSS, but allows for smoother gameplay suggestions when you need to hold Crusade for any reason.")
 CreatePanelOption("CheckButton", CP_Retribution, "APL.Paladin.Retribution.DisableDivineHammerCheck", "Disable Divine Hammer Check for Finishers and Cooldowns", "Enable this option to ignore the status of Divine Hammer when deciding whether to suggest finishers or other 'cooldown' abilities. NOTE: This causes the addon to stray from the APL, which will result in a DPS LOSS, but allows for smoother gameplay suggestions when you need to hold Divine Hammer for any reason.")
+CreatePanelOption("Slider", CP_Retribution, "APL.Paladin.Retribution.DivineShieldHP", {0, 100, 1}, "Divine Shield HP", "Cast Divine Shield on yourself when below this health percentage. Set to 0 to disable.")
+CreatePanelOption("Slider", CP_Retribution, "APL.Paladin.Retribution.ShieldOfVengeanceHP", {0, 100, 1}, "Shield of Vengeance HP", "Cast Shield of Vengeance on yourself when below this health percentage. Set to 0 to disable.")
+CreatePanelOption("Slider", CP_Retribution, "APL.Paladin.Retribution.WordOfGloryHP", {0, 100, 1}, "Word of Glory HP", "Cast Word of Glory on yourself when below this health percentage. Set to 0 to disable.")
+CreatePanelOption("Slider", CP_Retribution, "APL.Paladin.Retribution.FlashOfLightHP", {0, 100, 1}, "Flash of Light HP", "Cast Flash of Light on yourself when below this health percentage. Set to 0 to disable.")
