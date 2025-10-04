@@ -79,6 +79,8 @@ HR.GUISettings.APL.DeathKnight = {
   },
   Frost = {
     AMSAbsorbPercent = 0,
+    IceboundFortitudeThreshold = 30,
+    LichborneThreshold = 45,
     PotionType = {
       Selected = "Tempered",
     },
@@ -91,6 +93,8 @@ HR.GUISettings.APL.DeathKnight = {
       FrostStrike = false,
       FrostwyrmsFury = true,
       GlacialAdvance = true,
+      IceboundFortitude = false,
+      Lichborne = false,
       PillarOfFrost = true,
       ReapersMark = false,
     }
@@ -146,6 +150,8 @@ CreateARPanelOptions(CP_Blood, "APL.DeathKnight.Blood")
 
 --Frost Panels
 CreatePanelOption("Slider", CP_Frost, "APL.DeathKnight.Frost.AMSAbsorbPercent", {0, 100, 1}, "AMS Absorb Percentage", "Set this to the average percentage of AMS's absorb shield that is actively used on any given cast of AMS. Leave at 0 if unsure.")
+CreatePanelOption("Slider", CP_Frost, "APL.DeathKnight.Frost.IceboundFortitudeThreshold", {0, 100, 5}, "Icebound Fortitude Health Threshold", "Suggest Icebound Fortitude when below this health percentage. Set to 0 to disable.")
+CreatePanelOption("Slider", CP_Frost, "APL.DeathKnight.Frost.LichborneThreshold", {0, 100, 5}, "Lichborne Health Threshold", "Suggest Lichborne when below this health percentage. Set to 0 to disable.")
 CreateARPanelOptions(CP_Frost, "APL.DeathKnight.Frost")
 
 --Unholy Panels

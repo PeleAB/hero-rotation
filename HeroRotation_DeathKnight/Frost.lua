@@ -60,7 +60,7 @@ local VarRWBuff
 local VarSTPlanning, VarAddsRemain, VarSendingCDs
 local VarCDCheck, VarFWFBuffs
 local VarRunePooling, VarRPPooling
-local VarFrostscythePrio, VarBreathOfSindragosaCheck
+local VarFrostscythePrio, VarBreathOfSindragosaCheck, IsTanking
 local EnemiesMelee, EnemiesMeleeCount
 local BossFightRemains = 11111
 local FightRemains = 11111
@@ -187,6 +187,20 @@ end, "PLAYER_EQUIPMENT_CHANGED", "SPELLS_CHANGED", "LEARNED_SPELL_IN_TAB")
 --- ===== Helper Functions =====
 local function DeathStrikeHeal()
   return (Settings.General.SoloMode and (Player:HealthPercentage() < Settings.Commons.UseDeathStrikeHP or Player:HealthPercentage() < Settings.Commons.UseDarkSuccorHP and Player:BuffUp(S.DeathStrikeBuff)))
+end
+
+local function Defensives()
+  if not (Settings.General.SoloMode or IsTanking) then return end
+
+  local healthPercent = Player:HealthPercentage()
+
+  if Settings.Frost.IceboundFortitudeThreshold > 0 and S.IceboundFortitude:IsCastable() and healthPercent <= Settings.Frost.IceboundFortitudeThreshold and Player:BuffDown(S.IceboundFortitudeBuff) then
+    if Cast(S.IceboundFortitude, Settings.Frost.GCDasOffGCD.IceboundFortitude) then return "icebound_fortitude defensives"; end
+  end
+
+  if Settings.Frost.LichborneThreshold > 0 and S.Lichborne:IsCastable() and healthPercent <= Settings.Frost.LichborneThreshold and Player:BuffDown(S.LichborneBuff) and Player:BuffDown(S.IceboundFortitudeBuff) then
+    if Cast(S.Lichborne, Settings.Frost.GCDasOffGCD.Lichborne) then return "lichborne defensives"; end
+  end
 end
 
 --- ===== CastCycle Functions =====
@@ -512,6 +526,7 @@ local function APL()
   if Everyone.TargetIsValid() or Player:AffectingCombat() then
     -- Calculate fight_remains
     BossFightRemains = HL.BossFightRemains()
+    IsTanking = Player:IsTankingAoE(8) or (Target:Exists() and Player:IsTanking(Target))
     FightRemains = BossFightRemains
     if FightRemains == 11111 then
       FightRemains = HL.FightRemains(EnemiesMelee, false)
@@ -526,6 +541,9 @@ local function APL()
     -- use DeathStrike on low HP or with proc in Solo Mode
     if S.DeathStrike:IsReady() and DeathStrikeHeal() then
       if Cast(S.DeathStrike, nil, nil, not Target:IsInMeleeRange(5)) then return "death_strike low hp or proc"; end
+    end
+    if Settings.General.SoloMode or IsTanking then
+      local ShouldReturn = Defensives(); if ShouldReturn then return ShouldReturn; end
     end
     -- auto_attack
     -- call_action_list,name=variables
