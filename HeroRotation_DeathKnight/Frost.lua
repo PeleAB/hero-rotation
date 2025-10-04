@@ -190,8 +190,6 @@ local function DeathStrikeHeal()
 end
 
 local function Defensives()
-  if not (Settings.General.SoloMode or IsTanking) then return end
-
   local healthPercent = Player:HealthPercentage()
 
   if Settings.Frost.IceboundFortitudeThreshold > 0 and S.IceboundFortitude:IsCastable() and healthPercent <= Settings.Frost.IceboundFortitudeThreshold and Player:BuffDown(S.IceboundFortitudeBuff) then
@@ -542,9 +540,7 @@ local function APL()
     if S.DeathStrike:IsReady() and DeathStrikeHeal() then
       if Cast(S.DeathStrike, nil, nil, not Target:IsInMeleeRange(5)) then return "death_strike low hp or proc"; end
     end
-    if Settings.General.SoloMode or IsTanking then
-      local ShouldReturn = Defensives(); if ShouldReturn then return ShouldReturn; end
-    end
+    local ShouldReturn = Defensives(); if ShouldReturn then return ShouldReturn; end
     -- auto_attack
     -- call_action_list,name=variables
     Variables()
