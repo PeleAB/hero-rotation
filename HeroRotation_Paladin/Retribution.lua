@@ -226,7 +226,7 @@ local function Defensives()
     if Cast(S.WordofGlory, Settings.Retribution.GCDasOffGCD.WordOfGlory, Settings.Retribution.DisplayStyle.Defensives) then return "word_of_glory defensives 4"; end
   end
 
-  if Settings.Retribution.FlashOfLightHP > 0 and S.FlashofLight:IsCastable() and healthPercent <= Settings.Retribution.FlashOfLightHP and not Player:IsMoving() and not Player:HealingAbsorbed() then
+  if Settings.Retribution.FlashOfLightHP > 0 and S.FlashofLight:IsCastable() and healthPercent <= Settings.Retribution.FlashOfLightHP and S.FlashofLight:CastTime() == 0 and not Player:HealingAbsorbed() then
     if Cast(S.FlashofLight, Settings.Retribution.GCDasOffGCD.FlashOfLight, Settings.Retribution.DisplayStyle.Defensives) then return "flash_of_light defensives 6"; end
   end
 end
@@ -390,7 +390,7 @@ local function Generators()
     if Cast(S.HammerofWrath, Settings.CommonsOGCD.GCDasOffGCD.HammerOfWrath, nil, not Target:IsSpellInRange(S.HammerofWrath)) then return "hammer_of_wrath generators 28"; end
   end
   -- arcane_torrent
-  if S.ArcaneTorrent:IsCastable() then
+  if S.ArcaneTorrent:IsCastable() and HolyPower <= 2 then
     if Cast(S.ArcaneTorrent, Settings.CommonsOGCD.OffGCDasOffGCD.Racials, nil, not Target:IsInRange(8)) then return "arcane_torrent generators 30"; end
   end
 end

@@ -193,11 +193,11 @@ local function Defensives()
   local healthPercent = Player:HealthPercentage()
 
   if Settings.Frost.IceboundFortitudeThreshold > 0 and S.IceboundFortitude:IsCastable() and healthPercent <= Settings.Frost.IceboundFortitudeThreshold and Player:BuffDown(S.IceboundFortitudeBuff) then
-    if Cast(S.IceboundFortitude, Settings.Frost.GCDasOffGCD.IceboundFortitude) then return "icebound_fortitude defensives"; end
+    if Cast(S.IceboundFortitude, Settings.Frost.GCDasOffGCD.IceboundFortitude, Settings.Frost.DisplayStyle.Defensives) then return "icebound_fortitude defensives"; end
   end
 
   if Settings.Frost.LichborneThreshold > 0 and S.Lichborne:IsCastable() and healthPercent <= Settings.Frost.LichborneThreshold and Player:BuffDown(S.LichborneBuff) and Player:BuffDown(S.IceboundFortitudeBuff) then
-    if Cast(S.Lichborne, Settings.Frost.GCDasOffGCD.Lichborne) then return "lichborne defensives"; end
+    if Cast(S.Lichborne, Settings.Frost.GCDasOffGCD.Lichborne, Settings.Frost.DisplayStyle.Defensives) then return "lichborne defensives"; end
   end
 end
 

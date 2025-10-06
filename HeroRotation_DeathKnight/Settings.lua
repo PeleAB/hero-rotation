@@ -86,6 +86,7 @@ HR.GUISettings.APL.DeathKnight = {
     },
     DisplayStyle = {
       BreathOfSindragosa = "Suggested",
+      Defensives = "SuggestedRight",
     },
     GCDasOffGCD = {
       -- Abilities

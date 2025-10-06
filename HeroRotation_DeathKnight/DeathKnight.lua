@@ -52,6 +52,7 @@ Spell.DeathKnight.Commons = {
   DeathStrikeBuff                       = Spell(101568),
   EmpowerRuneWeaponBuff                 = Spell(47568),
   LichborneBuff                         = Spell(49039),
+  IceboundFortitudeBuff                 = Spell(48792),
   IcyTalonsBuff                         = Spell(194879),
   LatentEnergyBuff                      = Spell(1239675), -- Buff from Unyielding Netherprism
   RuneofHysteriaBuff                    = Spell(326918),
